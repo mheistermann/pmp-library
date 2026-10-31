@@ -639,13 +639,16 @@ public:
         Halfedge halfedge() const { return halfedge_; }
 
         // helper for C++11 range-based for-loops
-        VertexAroundVertexCirculator& begin()
+        // Return by value: begin()/end() mutate the circulator, so returning
+        // *this aliases. std::distance(vv.begin(), vv.end()) may then copy
+        // both endpoints after end() ran, making them compare equal.
+        VertexAroundVertexCirculator begin()
         {
             is_active_ = !halfedge_.is_valid();
             return *this;
         }
         // helper for C++11 range-based for-loops
-        VertexAroundVertexCirculator& end()
+        VertexAroundVertexCirculator end()
         {
             is_active_ = true;
             return *this;
@@ -732,13 +735,14 @@ public:
         operator bool() const { return halfedge_.is_valid(); }
 
         // helper for C++11 range-based for-loops
-        HalfedgeAroundVertexCirculator& begin()
+        // Return by value (see VertexAroundVertexCirculator::begin()).
+        HalfedgeAroundVertexCirculator begin()
         {
             is_active_ = !halfedge_.is_valid();
             return *this;
         }
         // helper for C++11 range-based for-loops
-        HalfedgeAroundVertexCirculator& end()
+        HalfedgeAroundVertexCirculator end()
         {
             is_active_ = true;
             return *this;
@@ -825,13 +829,14 @@ public:
         operator bool() const { return halfedge_.is_valid(); }
 
         // helper for C++11 range-based for-loops
-        EdgeAroundVertexCirculator& begin()
+        // Return by value (see VertexAroundVertexCirculator::begin()).
+        EdgeAroundVertexCirculator begin()
         {
             is_active_ = !halfedge_.is_valid();
             return *this;
         }
         // helper for C++11 range-based for-loops
-        EdgeAroundVertexCirculator& end()
+        EdgeAroundVertexCirculator end()
         {
             is_active_ = true;
             return *this;
@@ -931,13 +936,14 @@ public:
         operator bool() const { return halfedge_.is_valid(); }
 
         // helper for C++11 range-based for-loops
-        FaceAroundVertexCirculator& begin()
+        // Return by value (see VertexAroundVertexCirculator::begin()).
+        FaceAroundVertexCirculator begin()
         {
             is_active_ = !halfedge_.is_valid();
             return *this;
         }
         // helper for C++11 range-based for-loops
-        FaceAroundVertexCirculator& end()
+        FaceAroundVertexCirculator end()
         {
             is_active_ = true;
             return *this;
@@ -1025,13 +1031,14 @@ public:
         }
 
         // helper for C++11 range-based for-loops
-        VertexAroundFaceCirculator& begin()
+        // Return by value (see VertexAroundVertexCirculator::begin()).
+        VertexAroundFaceCirculator begin()
         {
             is_active_ = false;
             return *this;
         }
         // helper for C++11 range-based for-loops
-        VertexAroundFaceCirculator& end()
+        VertexAroundFaceCirculator end()
         {
             is_active_ = true;
             return *this;
@@ -1115,13 +1122,14 @@ public:
         Halfedge operator*() const { return halfedge_; }
 
         // helper for C++11 range-based for-loops
-        HalfedgeAroundFaceCirculator& begin()
+        // Return by value (see VertexAroundVertexCirculator::begin()).
+        HalfedgeAroundFaceCirculator begin()
         {
             is_active_ = false;
             return *this;
         }
         // helper for C++11 range-based for-loops
-        HalfedgeAroundFaceCirculator& end()
+        HalfedgeAroundFaceCirculator end()
         {
             is_active_ = true;
             return *this;
