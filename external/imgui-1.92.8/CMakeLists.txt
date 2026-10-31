@@ -1,3 +1,7 @@
+if(TARGET imgui)
+  return() # parent project supplies a shared imgui target
+endif()
+
 file(GLOB SOURCES ./*.cpp)
 file(GLOB HEADERS ./*.h)
 

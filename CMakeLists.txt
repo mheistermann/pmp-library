@@ -31,8 +31,12 @@ if(PMP_BUILD_VIEWERS)
   set(STB_IMAGE_SOURCE_DIR "external/stb_image-2.30")
   set(STB_IMAGE_WRITE_SOURCE_DIR "external/stb_image_write-1.16")
 
-  add_subdirectory(${STB_IMAGE_WRITE_SOURCE_DIR})
-  add_subdirectory(${STB_IMAGE_SOURCE_DIR})
+  if(NOT TARGET stb_image_write)
+    add_subdirectory(${STB_IMAGE_WRITE_SOURCE_DIR})
+  endif()
+  if(NOT TARGET stb_image)
+    add_subdirectory(${STB_IMAGE_SOURCE_DIR})
+  endif()
 
   # Building only the GLFW lib
   set(BUILD_SHARED_LIBS
@@ -59,12 +63,16 @@ if(PMP_BUILD_VIEWERS)
 
   # setup use of GLFW and GLAD
   if(NOT EMSCRIPTEN)
-    add_subdirectory(${GLFW_SOURCE_DIR_INTERNAL})
+    if(NOT TARGET glfw)
+      add_subdirectory(${GLFW_SOURCE_DIR_INTERNAL})
+    endif()
     include_directories(${GLAD_SOURCE_DIR}/include)
   endif()
 
-  # setup IMGUI
-  add_subdirectory(${IMGUI_SOURCE_DIR})
+  # setup IMGUI (skip when the parent project supplies its own imgui target)
+  if(NOT TARGET imgui)
+    add_subdirectory(${IMGUI_SOURCE_DIR})
+  endif()
 endif(PMP_BUILD_VIEWERS)
 
 if(NOT DEFINED EIGEN3_INCLUDE_DIR)
